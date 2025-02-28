@@ -152,11 +152,16 @@ def get_excel_download_link(df, filename="attendance_report.xlsx"):
         current_employee = None
         color_index = 0
         attendance_col_index = df.columns.get_loc("ATTENDANCE STATUS") + 1
+        employee_col_index = df.columns.get_loc("NEW EMPLOYEE NO.") + 1
         
-        for row_idx, row in enumerate(df.itertuples(), 2):  # Start from 2 to account for header
+        for row_idx in range(2, len(df) + 2):  # Start from 2 to account for header
+            # Get the employee ID for this row
+            employee_cell = worksheet.cell(row=row_idx, column=employee_col_index)
+            current_row_employee = employee_cell.value
+            
             # Check if employee changed
-            if current_employee != row.NEW_EMPLOYEE_NO_:
-                current_employee = row.NEW_EMPLOYEE_NO_
+            if current_employee != current_row_employee:
+                current_employee = current_row_employee
                 color_index = (color_index + 1) % len(employee_colors)
             
             # Apply row background color based on employee
@@ -171,7 +176,7 @@ def get_excel_download_link(df, filename="attendance_report.xlsx"):
             
             # Highlight attendance status
             status_cell = worksheet.cell(row=row_idx, column=attendance_col_index)
-            status_value = str(status_cell.value).strip().lower()
+            status_value = str(status_cell.value).strip().lower() if status_cell.value else ""
             
             if status_value == "normal":
                 status_cell.fill = normal_fill
