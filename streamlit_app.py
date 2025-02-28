@@ -219,7 +219,6 @@ def get_excel_download_link(df, filename="attendance_report.xlsx"):
     return href
 
 # Create an embedded database of employee information (extracted from database.csv)
-# This is hardcoded to avoid needing to upload database.csv every time
 def get_employee_database():
     """
     Returns a DataFrame with the employee database information.
@@ -410,6 +409,8 @@ st.markdown("""
 ### Note:
 - The report includes calculations for total hours (in HH:MM:SS format) and extra minutes
 - All entries for the same employee are grouped together and sorted by date
+- Attendance status is color-coded (Green for Normal, Red for Absence)
+- Each employee's rows have a unique background color for easy identification
 """)
 
 # Sidebar with additional information
@@ -429,7 +430,7 @@ with st.sidebar:
     - TIME IN
     - TIME OUT
     - TOTAL HOURS (in HH:MM:SS format)
-    - ATTENDANCE STATUS
+    - ATTENDANCE STATUS (color-coded)
     - EXTRA MINUTES
     - NEW INTIME (empty)
     - NEW OUTTIME (empty)
